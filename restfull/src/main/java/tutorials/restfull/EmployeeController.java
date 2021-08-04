@@ -40,10 +40,9 @@ public class EmployeeController {
         return repository.findById(id).map(employee -> {
             employee.setName(newEmployee.getName());
             employee.setRole(newEmployee.getRole());
-            System.out.println("=上=");
             return repository.save(employee);
         }).orElseGet(()->{
-            System.out.println("=した=");
+//            newEmployee.setId(id);
             return repository.save(newEmployee);
         });
     }
