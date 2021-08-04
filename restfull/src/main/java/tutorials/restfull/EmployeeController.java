@@ -1,14 +1,12 @@
 package tutorials.restfull;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("employees")
 public class EmployeeController {
     private final EmployeeRepository repository;
 
@@ -16,12 +14,12 @@ public class EmployeeController {
         this.repository = repository;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("")
     List<Employee> all(){
         return repository.findAll();
     }
 
-    @PostMapping("employees")
+    @PostMapping("")
     Employee newEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
