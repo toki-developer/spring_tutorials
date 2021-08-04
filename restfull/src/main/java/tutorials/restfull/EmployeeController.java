@@ -1,8 +1,8 @@
 package tutorials.restfull;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,14 +15,42 @@ public class EmployeeController {
     }
 
     @GetMapping("")
-    List<Employee> all(){
+    List<Employee> searchAllEmployees(){
         return repository.findAll();
     }
 
     @PostMapping("")
-    Employee newEmployee(@RequestBody Employee newEmployee) {
+    Employee addNewEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
 
+    @GetMapping("/id/{id}")
+    Employee searchEmployee(@PathVariable Long id){
+        Employee  employee = null;
+        try {
+            employee = repository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        } catch (ChangeSetPersister.NotFoundException e) {
+            e.printStackTrace();
+        }
+        return employee;
+    }
+
+    @PutMapping("/id/{id}")
+    Employee editEmployee(@RequestBody Employee newEmployee, @PathVariable Long id){
+        return repository.findById(id).map(employee -> {
+            employee.setName(newEmployee.getName());
+            employee.setRole(newEmployee.getRole());
+            System.out.println("=上=");
+            return repository.save(employee);
+        }).orElseGet(()->{
+            System.out.println("=した=");
+            return repository.save(newEmployee);
+        });
+    }
+
+    @DeleteMapping("/id/{id}")
+    void deleteEmployee(@PathVariable Long id){
+        repository.deleteById(id);
+    }
 
 }
