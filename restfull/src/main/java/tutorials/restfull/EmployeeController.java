@@ -26,12 +26,9 @@ public class EmployeeController {
 
     @GetMapping("/id/{id}")
     Employee searchEmployee(@PathVariable Long id){
-        Employee  employee = null;
-        try {
-            employee = repository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            e.printStackTrace();
-        }
+        Employee  employee;
+
+            employee = repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
         return employee;
     }
 
