@@ -18,13 +18,13 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     List<Employee> all(){
-        Object emp = repository.findAll();
-        System.out.println(emp);
-        return (List<Employee>) emp;
+        return repository.findAll();
     }
 
     @PostMapping("employees")
     Employee newEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
+
+
 }
